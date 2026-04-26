@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Каталог • LADIdance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --soft-white: #ffffff;
+            --blush: #fff5f5;
+            --rose: #fce4ec;
+            --petal: #f8bbd0;
+            --pink-soft: #f48fb1;
+            --pink-deep: #e91e63;
+            --pale: #fce4ec;
+            --shadow-soft: 0 20px 35px rgba(245, 190, 200, 0.15), 0 6px 12px rgba(0,0,0,0.03);
+            --shadow-card: 0 25px 45px rgba(240, 180, 190, 0.25), 0 5px 15px rgba(0,0,0,0.05);
+            --border-light: #ffe6eb;
+            --text-dark: #4a2c2c;
+            --text-soft: #7a5a5a;
+            --radius-large: 36px;
+            --radius-medium: 24px;
+            --transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #fff9fb;
+            color: var(--text-dark);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1320px; margin: 0 auto; padding: 0 28px; }
+
+        @keyframes softFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; }
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* header */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(235, 180, 190, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 34px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: -0.5px;
+        }
+        .logo-part1 { color: var(--pink-deep); font-weight: 800; }
+        .logo-part2 { color: var(--text-dark); }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 40px;
+            transition: var(--transition);
+            background: transparent;
+            font-size: 15px;
+        }
+        nav ul li a:hover {
+            background: var(--rose);
+            color: var(--pink-deep);
+        }
+        .header-icons {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+        .icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--blush);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pink-deep);
+            font-size: 20px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+        .icon-btn:hover {
+            background: #f8bbd0;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(233, 30, 99, 0.2);
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e91e63;
+            color: white;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+            animation: gentlePulse 2.5s infinite;
+        }
+
+        /* catalog header */
+        .catalog-header {
+            text-align: center;
+            padding: 50px 0 30px;
+        }
+        .catalog-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .catalog-header p {
+            color: var(--text-soft);
+            font-size: 18px;
+        }
+
+        /* search & filters */
+        .search-bar {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            padding: 15px 24px;
+            border: 2px solid #f8bbd0;
+            border-radius: 50px;
+            width: 320px;
+            font-family: inherit;
+            font-size: 15px;
+            background: white;
+            transition: var(--transition);
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 4px rgba(233,30,99,0.1);
+        }
+        .filter-btn {
+            padding: 13px 26px;
+            border-radius: 50px;
+            border: 2px solid #f8bbd0;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: inherit;
+            color: var(--text-dark);
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: #e91e63;
+            color: white;
+            border-color: #e91e63;
+            box-shadow: 0 10px 20px rgba(233,30,99,0.2);
+        }
+
+        /* products grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+            margin: 30px 0 60px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 34px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-12px);
+        }
+        .product-img {
+            height: 300px;
+            background: linear-gradient(145deg, #ffeef2, #ffe0e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: #e91e63;
+            overflow: hidden;
+        }
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 24px;
+            text-align: center;
+        }
+        .product-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .current-price {
+            color: #e91e63;
+            font-weight: 700;
+            font-size: 22px;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 14px;
+            background: #fff0f3;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 15px;
+            color: #4a2c2c;
+            font-family: inherit;
+            font-size: 15px;
+        }
+        .add-to-cart-btn:hover {
+            background: #e91e63;
+            color: white;
+        }
+
+        /* modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: white;
+            border-radius: 36px;
+            padding: 35px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #fff0f3;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #e91e63;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: #e91e63; color: white; }
+        .modal .swiper {
+            border-radius: 24px;
+            margin-bottom: 24px;
+        }
+        .modal .swiper-slide {
+            height: 350px;
+            background: linear-gradient(145deg, #ffeef2, #ffe0e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: #e91e63;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .modal .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff5f7;
+}
+.modal .swiper-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+        
+        #modal-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        #modal-desc {
+            color: var(--text-soft);
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        #modal-price {
+            font-size: 26px;
+            font-weight: 700;
+            color: #e91e63;
+        }
+
+        /* cart sidebar */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            height: 100%;
+            background: white;
+            z-index: 3100;
+            transition: 0.35s ease;
+            box-shadow: -10px 0 35px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 30px 0 0 30px;
+        }
+        .cart-sidebar.active { right: 0; }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            border-bottom: 1px solid #ffe6eb;
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 16px;
+            background: #fff5f7;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        .cart-footer {
+            padding: 25px;
+            border-top: 1px solid #ffe6eb;
+        }
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 16px;
+        }
+        .cart-checkout-btn:hover {
+            background: #c2185b;
+            transform: translateY(-2px);
+        }
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #f8bbd0;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        .qty-btn:hover { background: #e91e63; color: white; border-color: #e91e63; }
+
+        .toast {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            background: white;
+            padding: 16px 28px;
+            border-radius: 40px;
+            box-shadow: 0 25px 45px rgba(233,30,99,0.25);
+            z-index: 9999;
+            font-weight: 600;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; }
+            .cart-sidebar { width: 100%; border-radius: 0; }
+            .search-bar { flex-direction: column; align-items: center; }
+            .search-input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container header-container">
+        <a href="index.html" class="logo">
+            <span class="logo-part1">LADI</span><span class="logo-part2">dance</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="https://t.me/LadiDance" target="_blank" class="icon-btn" title="Написать в Telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <button class="icon-btn" id="cart-toggle-btn">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cart-count" style="display:none;">0</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="catalog-header">
+        <h1>Каталог</h1>
+        <p>Найдите свой идеальный образ для танца</p>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Поиск по товарам..." id="search">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="платья">Платья</button>
+        <button class="filter-btn" data-filter="юбки">Юбки</button>
+        <button class="filter-btn" data-filter="топы">Топы</button>
+        <button class="filter-btn" data-filter="аксессуары">Аксессуары</button>
+    </div>
+
+    <div class="products-grid" id="grid"></div>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal" id="product-modal">
+    <div class="modal-content">
+        <button class="modal-close" id="modal-close-btn"><i class="fas fa-times"></i></button>
+        <div class="swiper" id="modal-swiper">
+            <div class="swiper-wrapper"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <h2 id="modal-name"></h2>
+        <p id="modal-desc"></p>
+        <p id="modal-price"></p>
+        <button class="add-to-cart-btn" id="modal-add-btn" style="margin-top:15px;">
+            <i class="fas fa-shopping-cart"></i> Добавить в корзину
+        </button>
+    </div>
+</div>
+
+<!-- Корзина -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h3><i class="fas fa-shopping-bag"></i> Корзина</h3>
+        <button class="modal-close" id="cart-close-btn" style="position:static;"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <div style="text-align:center; padding:60px; color:#aaa;">
+            <i class="fas fa-shopping-cart" style="font-size:48px; color:#f8bbd0;"></i>
+            <p>Корзина пуста</p>
+        </div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+        <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:18px; font-size:18px;">
+            <span>Итого:</span>
+            <span id="cart-total-price" style="color:#e91e63;"></span>
+        </div>
+        <button class="cart-checkout-btn" id="checkout-btn">
+            <i class="fab fa-telegram-plane"></i> Заказать через Telegram
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    (function() {
+        const adminTelegram = 'LadiDance';
+        let cart = JSON.parse(localStorage.getItem('ladidance_cart')) || [];
+        let currentFilter = 'all';
+        let selectedProduct = null;
+        let modalSwiper = null; // ← храним экземпляр Swiper
+
+        // ========== ТОВАРЫ ==========
+        const allProducts = [
+            { 
+                name: 'Платье «Элегант»', 
+                category: 'платья', 
+                price: 2000, 
+                images: [
+                    'images/dress-elegant.jpg',
+                    'images/tunikapp.jpg',
+                    'images/tunika.jpg'
+                ],
+                video: '',
+                icon: 'fa-female', 
+                desc: '«Freedom» — символ свободы 🤍' 
+            },
+            { 
+                name: 'Топ «Hug» - Объятия', 
+                category: 'топы', 
+                price: 3000, 
+                images: [
+                    'images/Top.jpg',
+                    'images/Top2.jpg',
+                    'images/Top3.jpg'
+                ],
+                video: '',
+                icon: 'fa-tshirt', 
+                desc: 'Топ «Hug» - Объятия • Вшитые чашки • Доступные размеры: S/M • Возможен пошив по индивидуальным меркам ✨' 
+            },
+            { 
+                name: 'Юбка «Wave» - Волна 🌊', 
+                category: 'юбки', 
+                price: 3000, 
+                images: [
+                    'images/shortpp.jpg',
+                    'images/shortpp2.jpg',
+                    'images/shortpp3.jpg'
+                ],
+                video: '',
+                icon: 'fa-vest', 
+                desc: 'Юбка «Wave» - Волна 🌊 • Стильный акцент с разрезом • Вшитые шорты • Размеры S/M • Пошив по меркам' 
+            },
+            { 
+                name: 'Сет «Мечта»', 
+                category: 'платья', 
+                price: 2500, 
+                images: [
+                    'images/pepe.jpg',
+                    'images/gr.jpg',
+                    'image/jopa.jpg'
+                ],
+                video: 'videos/vvv.mp4',
+                icon: 'fa-female', 
+                desc: 'Топ 2000, Юбка-платок 2500' 
+            },
+            { 
+                name: 'GraceMesh-Грация в сетке✨', 
+                category: 'Топ', 
+                price: 4500, 
+                images: [
+                    'images/kk.jpg',
+                    'https://via.placeholder.com/400x500/fce4ec/e91e63?text=Шарм+2',
+                    'https://via.placeholder.com/400x500/fce4ec/e91e63?text=Шарм+3'
+                ],
+                video: 'videos/pupupu.mp4',
+                icon: 'fa-gem', 
+                desc: 'GraceMesh-Грация в сетке✨ В комплект входит: •Топ с чашками •Юбка-платок  имеется разной длины, на видео 40см •Шорты В наличии имеются размеры S/M ~ Можно приобрести раздельно ~ Пошив по индивидуальныммеркам' 
+            },
+            
+        ];
+
+        function getFirstImage(product) {
+            if (product.images && product.images.length > 0) return product.images[0];
+            if (product.image) return product.image;
+            return '';
+        }
+
+        function saveCart() { localStorage.setItem('ladidance_cart', JSON.stringify(cart)); renderCart(); }
+
+        function addToCart(name, price, image) {
+            const exist = cart.find(i => i.name === name);
+            exist ? exist.quantity++ : cart.push({ name, price, image: image || '', quantity: 1 });
+            saveCart();
+            showToast('🩰 ' + name + ' добавлен');
+        }
+
+        function removeFromCart(index) { cart.splice(index, 1); saveCart(); }
+        
+        function updateQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) cart.splice(index, 1);
+            saveCart();
+        }
+
+        window.cartRemoveItem = removeFromCart;
+        window.cartUpdateQuantity = updateQuantity;
+
+        function renderCart() {
+            const count = cart.reduce((s, i) => s + i.quantity, 0);
+            const countEl = document.getElementById('cart-count');
+            const footer = document.getElementById('cart-footer');
+            const itemsContainer = document.getElementById('cart-items');
+            
+            countEl.style.display = count ? 'flex' : 'none';
+            countEl.textContent = count;
+            
+            if (count === 0) {
+                footer.style.display = 'none';
+                itemsContainer.innerHTML = `
+                    <div style="text-align:center; padding:60px; color:#aaa;">
+                        <i class="fas fa-shopping-cart" style="font-size:48px; color:#f8bbd0;"></i>
+                        <p>Корзина пуста</p>
+                    </div>`;
+            } else {
+                footer.style.display = 'block';
+                let total = 0;
+                itemsContainer.innerHTML = '';
+                cart.forEach((item, idx) => {
+                    total += item.price * item.quantity;
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div style="width:50px; height:50px; border-radius:50%; overflow:hidden; background:#ffe0e6;">
+                                ${item.image 
+                                    ? `<img src="${item.image}" alt="${item.name}" style="width:100%; height:100%; object-fit:cover;">`
+                                    : `<i class="fas fa-box" style="color:#e91e63; display:flex; align-items:center; justify-content:center; height:100%;"></i>`
+                                }
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;">${item.name}</div>
+                                <div style="color:#e91e63; font-weight:700;">${(item.price * item.quantity).toLocaleString()} ₽</div>
+                                <div style="display:flex; gap:8px; align-items:center; margin-top:6px;">
+                                    <button class="qty-btn" onclick="window.cartUpdateQuantity(${idx}, -1)">−</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="qty-btn" onclick="window.cartUpdateQuantity(${idx}, 1)">+</button>
+                                </div>
+                            </div>
+                            <button onclick="window.cartRemoveItem(${idx})" style="color:#ff4444; background:none; border:none; cursor:pointer; font-size:16px;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>`;
+                });
+                document.getElementById('cart-total-price').textContent = total.toLocaleString() + ' ₽';
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-overlay').classList.toggle('active');
+            document.getElementById('cart-sidebar').classList.toggle('active');
+        }
+
+        // ========== МОДАЛЬНОЕ ОКНО (ИСПРАВЛЕНО) ==========
+        function openModal(product) {
+            selectedProduct = product;
+            document.getElementById('modal-name').textContent = product.name;
+            document.getElementById('modal-desc').textContent = product.desc;
+            document.getElementById('modal-price').textContent = product.price.toLocaleString() + ' ₽';
+            document.getElementById('product-modal').classList.add('active');
+            
+            const swiperWrapper = document.querySelector('#modal-swiper .swiper-wrapper');
+            swiperWrapper.innerHTML = '';
+
+            // Видео первым слайдом
+            if (product.video) {
+                swiperWrapper.innerHTML += `
+                    <div class="swiper-slide" style="background:#000;">
+                        <video src="${product.video}" controls playsinline 
+                            style="width:100%; height:100%; object-fit:contain; background:#000;">
+                        </video>
+                    </div>`;
+            }
+
+            // Фото из массива images
+            if (product.images && product.images.length > 0) {
+                product.images.forEach(imgSrc => {
+                    swiperWrapper.innerHTML += `
+                        <div class="swiper-slide">
+                            <img src="${imgSrc}" alt="${product.name}" style="object-fit:contain; background:#fff5f7;">
+                        </div>`;
+                });
+            } else if (product.image) {
+                swiperWrapper.innerHTML += `
+                    <div class="swiper-slide">
+                        <img src="${product.image}" alt="${product.name}" style="object-fit:cover;">
+                    </div>`;
+            } else {
+                swiperWrapper.innerHTML += `
+                    <div class="swiper-slide">
+                        <i class="fas ${product.icon}"></i>
+                    </div>`;
+            }
+
+            // Уничтожаем старый Swiper
+            if (modalSwiper) {
+                modalSwiper.destroy(true, true);
+                modalSwiper = null;
+            }
+
+            // Создаём новый
+            const slideCount = swiperWrapper.children.length;
+            modalSwiper = new Swiper('#modal-swiper', {
+                loop: slideCount > 1,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                autoplay: slideCount > 1 ? { delay: 3000, disableOnInteraction: false } : false
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            // Останавливаем видео
+            const videos = document.querySelectorAll('#modal-swiper video');
+            videos.forEach(v => v.pause());
+        }
+
+        // ========== ОБРАБОТЧИКИ МОДАЛЬНОГО ОКНА ==========
+        document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+        
+        // Закрытие по клику на тёмный фон
+        document.getElementById('product-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Закрытие по клавише Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.getElementById('modal-add-btn').addEventListener('click', () => {
+            if (selectedProduct) {
+                const img = getFirstImage(selectedProduct);
+                addToCart(selectedProduct.name, selectedProduct.price, img);
+                closeModal();
+            }
+        });
+
+        // ========== КОРЗИНА: ОБРАБОТЧИКИ ==========
+        document.getElementById('cart-toggle-btn').addEventListener('click', toggleCart);
+        document.getElementById('cart-close-btn').addEventListener('click', toggleCart);
+        document.getElementById('cart-overlay').addEventListener('click', toggleCart);
+
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (!cart.length) return;
+            let msg = 'Здравствуйте! Хочу заказать:%0A%0A';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                msg += `— ${item.name} (×${item.quantity}): ${(item.price * item.quantity).toLocaleString()} ₽%0A`;
+            });
+            msg += `%0AИтого: ${total.toLocaleString()} ₽%0A%0AПожалуйста, свяжитесь со мной.`;
+            window.open(`https://t.me/${adminTelegram}?text=${msg}`, '_blank');
+        });
+
+        // ========== РЕНДЕР КАРТОЧЕК ==========
+        function renderProducts() {
+            const query = document.getElementById('search').value.toLowerCase();
+            let filtered = allProducts.filter(p => 
+                (currentFilter === 'all' || p.category === currentFilter) &&
+                p.name.toLowerCase().includes(query)
+            );
+            
+            document.getElementById('grid').innerHTML = filtered.map(p => {
+                const firstImg = getFirstImage(p);
+                return `
+                <div class="product-card" data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}'>
+                    <div class="product-img">
+                        ${firstImg 
+                            ? `<img src="${firstImg}" alt="${p.name}">`
+                            : `<i class="fas ${p.icon}"></i>`
+                        }
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${p.name}</div>
+                        <div class="current-price">${p.price.toLocaleString()} ₽</div>
+                        <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${firstImg}">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.add-to-cart-btn')) return;
+                    const product = JSON.parse(this.dataset.product);
+                    openModal(product);
+                });
+            });
+
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const { name, price, image } = this.dataset;
+                    addToCart(name, +price, image);
+                });
+            });
+        }
+
+        // Фильтры
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                renderProducts();
+            });
+        });
+
+        // Поиск
+        document.getElementById('search').addEventListener('input', renderProducts);
+
+        // Toast
+        function showToast(msg) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = '0';
+                setTimeout(() => t.remove(), 300);
+            }, 2500);
+        }
+
+        renderCart();
+        renderProducts();
+    })();
+</script>
+</body>
+</html>
