@@ -477,8 +477,8 @@
             <div class="hero-badge">
                 <i class="fas fa-feather-alt"></i> новая коллекция
             </div>
-            <h1>танец нежности</h1>
-            <p>Изысканная одежда для бальных танцев в бело‑розовой дымке</p>
+            <h1></h1>
+            <p>Тренировочная одежда для бальных танцев 👇<p>
             <a href="catalog.html" class="btn btn-primary">
                 <i class="fas fa-sparkles"></i> Смотреть каталог
             </a>
@@ -578,7 +578,6 @@
             <div class="footer-col">
                 <h3>помощь</h3>
                 <ul>
-                    <li><a href="#">Доставка</a></li>
                     <li><a href="#">Возврат</a></li>
                 </ul>
             </div>
@@ -594,11 +593,10 @@
                 <p>Саратов</p>
             </div>
         </div>
-        <div style="text-align:center; margin-top:35px; color:#f8bbd0;">© 2024 LADIdance</div>
+        <div style="text-align:center; margin-top:35px; color:#f8bbd0;">© 2026 LADIdance</div>
     </div>
 </footer>
 
-<!-- корзина -->
 <div class="cart-overlay" id="cart-overlay"></div>
 <div class="cart-sidebar" id="cart-sidebar">
     <div style="padding:25px; display:flex; justify-content:space-between;">
@@ -622,49 +620,47 @@
         const adminTelegram = 'LadiDance';
         let cart = JSON.parse(localStorage.getItem('ladidance_cart')) || [];
 
-        // ========== ТОВАРЫ ==========
-        // ЗАМЕНИТЬ НА СВОИ ССЫЛКИ: в поле image вставьте ссылку на фото товара
         const allProducts = [
             { 
                 name: 'Туника', 
                 category: 'платья', 
                 price: 2000, 
-                image: 'images/dress-elegant.jpg', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: 'images/dress-elegant.jpg',
                 icon: 'fa-female' 
             },
             { 
                 name: 'Юбка «Wave» - Волна 🌊', 
                 category: 'юбки', 
                 price: 3000, 
-                image: 'images/shortpp.jpg', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: 'images/shortpp.jpg',
                 icon: 'fa-tshirt' 
             },
             { 
                 name: 'Топ «Hug» - Объятия', 
                 category: 'топы', 
                 price: 3000, 
-                image: 'images/Top.jpg', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: 'images/Top.jpg',
                 icon: 'fa-vest' 
             },
             { 
                 name: 'Шорты', 
                 category: 'платья', 
                 price: 2500, 
-                image: 'images/Toop.jpg', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: 'images/Toop.jpg',
                 icon: 'fa-female' 
             },
             { 
                 name: 'Планируется что-то новое', 
                 category: 'топы', 
                 price: 0, 
-                image: '', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: '',
                 icon: 'fa-user-tie' 
             },
             { 
                 name: 'Планируется что-то новое', 
                 category: 'юбки', 
                 price: 0, 
-                image: '', // ← ЗАМЕНИТЬ НА СВОЮ ССЫЛКУ
+                image: '',
                 icon: 'fa-tshirt' 
             }
         ];
@@ -689,7 +685,6 @@
             saveCart();
         }
 
-        // Глобальные ссылки
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
 
@@ -775,7 +770,6 @@
             }, 2500);
         }
 
-        // Слайдер с товарами
         if (document.getElementById('popular-products')) {
             const wrapper = document.getElementById('popular-products');
             allProducts.forEach(p => {
@@ -812,7 +806,6 @@
                 }
             });
 
-            // Кнопки "В корзину" в слайдере
             document.querySelectorAll('#popular-products .add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();

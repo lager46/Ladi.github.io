@@ -329,31 +329,35 @@
             overflow: hidden;
         }
         .modal .swiper-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #fff5f7;
-}
-.modal .swiper-slide video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #000;
-}
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff5f7;
+        }
+        .modal .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
         
         #modal-name {
             font-size: 24px;
             font-weight: 700;
+            margin-bottom: 8px;
         }
         #modal-desc {
             color: var(--text-soft);
-            margin: 10px 0;
+            margin: 12px 0;
             line-height: 1.6;
+            white-space: normal;
+            word-break: break-word;
         }
         #modal-price {
             font-size: 26px;
             font-weight: 700;
             color: #e91e63;
+            margin-top: 8px;
         }
 
         /* cart sidebar */
@@ -450,7 +454,7 @@
         }
 
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; }
+            .header-container { flex-direction: column; gap: 12px; }
             .cart-sidebar { width: 100%; border-radius: 0; }
             .search-bar { flex-direction: column; align-items: center; }
             .search-input { width: 100%; }
@@ -495,6 +499,7 @@
         <button class="filter-btn" data-filter="юбки">Юбки</button>
         <button class="filter-btn" data-filter="топы">Топы</button>
         <button class="filter-btn" data-filter="аксессуары">Аксессуары</button>
+        <button class="filter-btn" data-filter="Боди">Боди</button>
     </div>
 
     <div class="products-grid" id="grid"></div>
@@ -509,7 +514,7 @@
             <div class="swiper-pagination"></div>
         </div>
         <h2 id="modal-name"></h2>
-        <p id="modal-desc"></p>
+        <div id="modal-desc"></div>
         <p id="modal-price"></p>
         <button class="add-to-cart-btn" id="modal-add-btn" style="margin-top:15px;">
             <i class="fas fa-shopping-cart"></i> Добавить в корзину
@@ -517,7 +522,6 @@
     </div>
 </div>
 
-<!-- Корзина -->
 <div class="cart-overlay" id="cart-overlay"></div>
 <div class="cart-sidebar" id="cart-sidebar">
     <div class="cart-header">
@@ -548,12 +552,11 @@
         let cart = JSON.parse(localStorage.getItem('ladidance_cart')) || [];
         let currentFilter = 'all';
         let selectedProduct = null;
-        let modalSwiper = null; // ← храним экземпляр Swiper
+        let modalSwiper = null;
 
-        // ========== ТОВАРЫ ==========
         const allProducts = [
             { 
-                name: 'Туника', 
+                name: 'Туника "Freedom"', 
                 category: 'платья', 
                 price: 2000, 
                 images: [
@@ -569,55 +572,84 @@
                 name: 'Топ «Hug» - Объятия', 
                 category: 'топы', 
                 price: 3000, 
-                images: [
-                    'images/Top.jpg',
-                    'images/Top2.jpg',
-                    'images/Top3.jpg'
-                ],
+                images: ['images/sh.jpg'],
                 video: '',
                 icon: 'fa-tshirt', 
-                desc: 'Топ «Hug» - Объятия • Вшитые чашки • Доступные размеры: S/M • Возможен пошив по индивидуальным меркам ✨' 
+                desc: 'Топ «Hug» - Объятия<br>• Вшитые чашки<br>• Доступные размеры: S/M<br>• Возможен пошив по индивидуальным меркам ✨' 
             },
             { 
                 name: 'Юбка «Wave» - Волна 🌊', 
                 category: 'юбки', 
                 price: 3000, 
-                images: [
-                    'images/shortpp.jpg',
-                    'images/shortpp2.jpg',
-                    'images/shortpp3.jpg'
-                ],
+                images: ['images/shortpp.jpg', 'images/shortpp2.jpg', 'images/shortpp3.jpg'],
                 video: '',
                 icon: 'fa-vest', 
-                desc: 'Юбка «Wave» - Волна 🌊 • Стильный акцент с разрезом • Вшитые шорты • Размеры S/M • Пошив по меркам' 
+                desc: 'Юбка «Wave» - Волна 🌊<br>• Стильный акцент с разрезом<br>• Вшитые шорты<br>• Размеры S/M<br>• Пошив по меркам' 
             },
             { 
-                name: 'Сет «Мечта»', 
+                name: 'Комплект «Мечта»', 
                 category: 'платья', 
                 price: 2500, 
-                images: [
-                    'images/pepe.jpg',
-                    'images/gr.jpg',
-                    'image/jopa.jpg'
-                ],
+                images: ['images/pepe.jpg', 'images/gr.jpg'],
                 video: 'videos/vvv.mp4',
                 icon: 'fa-female', 
-                desc: 'Топ 2000, Юбка-платок 2500' 
+                desc: 'В комплект входит<br>Топ:<br>Без чашек -S/М 1шт осталась<br>С чашками -S/M 2000₽<br>Шорты 1000₽<br>Юбка-платок:<br>Имеется разная длина платка<br>На видео длина составляет 40см<br>2500₽<br>Можно приобретать отдельно 🤍' 
             },
             { 
                 name: 'GraceMesh-Грация в сетке✨', 
-                category: 'Топ', 
+                category: 'топы', 
                 price: 4500, 
-                images: [
-                    'images/kk.jpg',
-                    'https://via.placeholder.com/400x500/fce4ec/e91e63?text=Шарм+2',
-                    'https://via.placeholder.com/400x500/fce4ec/e91e63?text=Шарм+3'
-                ],
+                images: ['images/kk.jpg'],
                 video: 'videos/pupupu.mp4',
                 icon: 'fa-gem', 
-                desc: 'GraceMesh-Грация в сетке✨ В комплект входит: •Топ с чашками •Юбка-платок  имеется разной длины, на видео 40см •Шорты В наличии имеются размеры S/M ~ Можно приобрести раздельно ~ Пошив по индивидуальныммеркам' 
+                desc: 'GraceMesh-Грация в сетке✨<br><br>В комплект входит:<br>• Топ с чашками<br>• Юбка-платок имеется разной длины, на видео 40см<br>• Шорты<br><br>В наличии имеются размеры S/M<br>~ Можно приобрести раздельно<br>• Пошив по индивидуальным меркам' 
             },
-            
+            { 
+                name: 'Митинги 🤍', 
+                category: 'топы', 
+                price: 0, 
+                images: ['images/pll.jpg', 'images/plll.jpg'],
+                video: '',
+                icon: 'fa-gem', 
+                desc: 'Изделие по вашим размерам для заказа писать в директ', 
+                customPriceText: 'Договорная'
+            },
+            { 
+                name: 'Боди №2', 
+                category: 'Боди', 
+                price: 3000, 
+                images: ['images/pkkk.jpg', 'images/pkk.jpg'],
+                video: '',
+                icon: 'fa-gem', 
+                desc: 'Боди #2<br>• с вшитыми чашками<br>• сзади молния<br>• возможен пошив по индивидуальным меркам<br> в наличие размеры S/M' 
+            },
+            { 
+                name: 'Шорты', 
+                category: 'топы', 
+                price: 1000, 
+                images: ['images/sh.jpg', 'images/wll.jpg'],
+                video: '',
+                icon: 'fa-tshirt', 
+                desc: 'Шорты с нежной тканью' 
+            },
+            { 
+                name: 'Юбка-платок', 
+                category: 'юбки', 
+                price: 2500, 
+                images: ['images/wll.jpg', 'images/kk.jpg'],
+                video: 'videos/pupupu.mp4',
+                icon: 'fa-tshirt', 
+                desc: 'Юбка-платок:<br>Имеется разная длина платка<br>На видео длина составляет 40см' 
+            },
+            { 
+                name: 'Боди №1', 
+                category: 'Боди', 
+                price: 2500, 
+                images: ['images/mm.jpg', 'images/plll.jpg', 'images/mmm.jpg', 'images/mmmm.jpg'],
+                video: '',
+                icon: 'fa-tshirt', 
+                desc: 'Боди №1:<br>C вшитыми чашками включает полуперчатку <br>Доступные размеры: S/M<br>~ Возможен пошив по индивидуальным размерам' 
+            }
         ];
 
         function getFirstImage(product) {
@@ -629,8 +661,13 @@
         function saveCart() { localStorage.setItem('ladidance_cart', JSON.stringify(cart)); renderCart(); }
 
         function addToCart(name, price, image) {
+            if (price === 0 || price === 'Договорная') {
+                showToast('❌ Для этого товара цена договорная, оформите заказ через Telegram');
+                return;
+            }
+            const numericPrice = typeof price === 'number' ? price : parseInt(price, 10);
             const exist = cart.find(i => i.name === name);
-            exist ? exist.quantity++ : cart.push({ name, price, image: image || '', quantity: 1 });
+            exist ? exist.quantity++ : cart.push({ name, price: numericPrice, image: image || '', quantity: 1 });
             saveCart();
             showToast('🩰 ' + name + ' добавлен');
         }
@@ -699,19 +736,26 @@
             document.getElementById('cart-sidebar').classList.toggle('active');
         }
 
-        // ========== МОДАЛЬНОЕ ОКНО (ИСПРАВЛЕНО) ==========
         function openModal(product) {
             selectedProduct = product;
             document.getElementById('modal-name').textContent = product.name;
-            document.getElementById('modal-desc').textContent = product.desc;
-            document.getElementById('modal-price').textContent = product.price.toLocaleString() + ' ₽';
+            const descContainer = document.getElementById('modal-desc');
+            if (product.desc) {
+                descContainer.innerHTML = product.desc;
+            } else {
+                descContainer.textContent = '';
+            }
+            
+            const priceValue = (product.customPriceText || product.price === 0) 
+                ? (product.customPriceText || 'Договорная') 
+                : product.price.toLocaleString() + ' ₽';
+            document.getElementById('modal-price').textContent = priceValue;
             document.getElementById('product-modal').classList.add('active');
             
             const swiperWrapper = document.querySelector('#modal-swiper .swiper-wrapper');
             swiperWrapper.innerHTML = '';
 
-            // Видео первым слайдом
-            if (product.video) {
+            if (product.video && product.video.trim() !== '') {
                 swiperWrapper.innerHTML += `
                     <div class="swiper-slide" style="background:#000;">
                         <video src="${product.video}" controls playsinline 
@@ -720,13 +764,14 @@
                     </div>`;
             }
 
-            // Фото из массива images
             if (product.images && product.images.length > 0) {
                 product.images.forEach(imgSrc => {
-                    swiperWrapper.innerHTML += `
-                        <div class="swiper-slide">
-                            <img src="${imgSrc}" alt="${product.name}" style="object-fit:contain; background:#fff5f7;">
-                        </div>`;
+                    if (imgSrc && imgSrc.trim() !== '') {
+                        swiperWrapper.innerHTML += `
+                            <div class="swiper-slide">
+                                <img src="${imgSrc}" alt="${product.name}" style="object-fit:contain; background:#fff5f7;">
+                            </div>`;
+                    }
                 });
             } else if (product.image) {
                 swiperWrapper.innerHTML += `
@@ -736,17 +781,15 @@
             } else {
                 swiperWrapper.innerHTML += `
                     <div class="swiper-slide">
-                        <i class="fas ${product.icon}"></i>
+                        <i class="fas ${product.icon || 'fa-box'}" style="font-size: 80px;"></i>
                     </div>`;
             }
 
-            // Уничтожаем старый Swiper
             if (modalSwiper) {
                 modalSwiper.destroy(true, true);
                 modalSwiper = null;
             }
 
-            // Создаём новый
             const slideCount = swiperWrapper.children.length;
             modalSwiper = new Swiper('#modal-swiper', {
                 loop: slideCount > 1,
@@ -757,20 +800,16 @@
 
         function closeModal() {
             document.getElementById('product-modal').classList.remove('active');
-            // Останавливаем видео
             const videos = document.querySelectorAll('#modal-swiper video');
             videos.forEach(v => v.pause());
         }
 
-        // ========== ОБРАБОТЧИКИ МОДАЛЬНОГО ОКНА ==========
         document.getElementById('modal-close-btn').addEventListener('click', closeModal);
         
-        // Закрытие по клику на тёмный фон
         document.getElementById('product-modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // Закрытие по клавише Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
@@ -778,12 +817,16 @@
         document.getElementById('modal-add-btn').addEventListener('click', () => {
             if (selectedProduct) {
                 const img = getFirstImage(selectedProduct);
-                addToCart(selectedProduct.name, selectedProduct.price, img);
+                let priceToUse = selectedProduct.price;
+                if (selectedProduct.customPriceText || selectedProduct.price === 0) {
+                    showToast('❌ Договорная цена, напишите в Telegram для заказа');
+                    return;
+                }
+                addToCart(selectedProduct.name, priceToUse, img);
                 closeModal();
             }
         });
 
-        // ========== КОРЗИНА: ОБРАБОТЧИКИ ==========
         document.getElementById('cart-toggle-btn').addEventListener('click', toggleCart);
         document.getElementById('cart-close-btn').addEventListener('click', toggleCart);
         document.getElementById('cart-overlay').addEventListener('click', toggleCart);
@@ -800,28 +843,34 @@
             window.open(`https://t.me/${adminTelegram}?text=${msg}`, '_blank');
         });
 
-        // ========== РЕНДЕР КАРТОЧЕК ==========
         function renderProducts() {
             const query = document.getElementById('search').value.toLowerCase();
             let filtered = allProducts.filter(p => 
-                (currentFilter === 'all' || p.category === currentFilter) &&
+                (currentFilter === 'all' || p.category.toLowerCase() === currentFilter.toLowerCase()) &&
                 p.name.toLowerCase().includes(query)
             );
             
             document.getElementById('grid').innerHTML = filtered.map(p => {
                 const firstImg = getFirstImage(p);
+                const priceDisplay = (p.customPriceText || p.price === 0) ? 'Договорная' : p.price.toLocaleString() + ' ₽';
+                // важно: экранируем данные для data-product
+                const productData = {
+                    ...p,
+                    price: typeof p.price === 'number' ? p.price : 0,
+                    customPriceText: p.customPriceText || (p.price === 0 ? 'Договорная' : null)
+                };
                 return `
-                <div class="product-card" data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}'>
+                <div class="product-card" data-product='${JSON.stringify(productData).replace(/'/g, "&#39;")}'>
                     <div class="product-img">
                         ${firstImg 
                             ? `<img src="${firstImg}" alt="${p.name}">`
-                            : `<i class="fas ${p.icon}"></i>`
+                            : `<i class="fas ${p.icon || 'fa-box'}"></i>`
                         }
                     </div>
                     <div class="product-info">
                         <div class="product-name">${p.name}</div>
-                        <div class="current-price">${p.price.toLocaleString()} ₽</div>
-                        <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${firstImg}">
+                        <div class="current-price">${priceDisplay}</div>
+                        <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${firstImg}" ${p.price === 0 || p.customPriceText ? 'data-dogovor="true"' : ''}>
                             <i class="fas fa-shopping-cart"></i> В корзину
                         </button>
                     </div>
@@ -831,21 +880,26 @@
             document.querySelectorAll('.product-card').forEach(card => {
                 card.addEventListener('click', function(e) {
                     if (e.target.closest('.add-to-cart-btn')) return;
-                    const product = JSON.parse(this.dataset.product);
-                    openModal(product);
+                    try {
+                        const product = JSON.parse(this.dataset.product);
+                        openModal(product);
+                    } catch(err) { console.warn(err); }
                 });
             });
 
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const { name, price, image } = this.dataset;
+                    const { name, price, image, dogovor } = this.dataset;
+                    if (dogovor === 'true' || price === '0' || price === 'Договорная') {
+                        showToast('❌ Цена договорная, напишите нам в Telegram');
+                        return;
+                    }
                     addToCart(name, +price, image);
                 });
             });
         }
 
-        // Фильтры
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -855,10 +909,8 @@
             });
         });
 
-        // Поиск
         document.getElementById('search').addEventListener('input', renderProducts);
-
-        // Toast
+        
         function showToast(msg) {
             const existing = document.querySelector('.toast');
             if (existing) existing.remove();
